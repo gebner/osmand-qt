@@ -1,0 +1,9 @@
+[submodule "osmand/OsmAnd-core"]
+	path = osmand/core
+	url = https://github.com/osmandapp/OsmAnd-core.git
+[submodule "osmand/core"]
+	path = osmand/core
+	url = https://github.com/osmandapp/OsmAnd-core.git
+[submodule "osmand/build"]
+	path = osmand/build
+	url = https://github.com/osmandapp/OsmAnd-build.git
