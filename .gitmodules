@@ -7,3 +7,6 @@
 [submodule "osmand/build"]
 	path = osmand/build
 	url = https://github.com/osmandapp/OsmAnd-build.git
+[submodule "osmand/resources"]
+	path = osmand/resources
+	url = https://github.com/osmandapp/OsmAnd-resources.git

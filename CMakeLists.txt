@@ -16,4 +16,6 @@ find_package(Qt5Network REQUIRED)
 find_package(Qt5Sql REQUIRED)
 
 add_executable(main main.cpp)
-target_link_libraries(main Qt5::Widgets OsmAndCore_shared)
+target_link_libraries(main
+  Qt5::Widgets
+  OsmAndCore_shared OsmAndCore_ResourcesBundle)

@@ -75,5 +75,17 @@ add_subdirectory("${OSMAND_ROOT}/core/externals/skia" "core/externals/skia")
 add_subdirectory("${OSMAND_ROOT}/core/externals/libarchive" "core/externals/libarchive")
 
 add_subdirectory(core)
-
 include_directories(core/include)
+
+# prevent resources from being built every single time
+include(ExternalProject)
+ExternalProject_Add(resources
+  SOURCE_DIR ${PROJECT_SOURCE_DIR}/resources
+  CMAKE_ARGS -DCMAKE_SHARED_LIBS_ALLOWED_ON_TARGET=ON
+  INSTALL_COMMAND ""
+  )
+ExternalProject_Get_Property(resources BINARY_DIR)
+add_library(OsmAndCore_ResourcesBundle empty.cc)
+add_dependencies(OsmAndCore_ResourcesBundle resources)
+target_link_libraries(OsmAndCore_ResourcesBundle
+  ${BINARY_DIR}/libOsmAndCore_ResourcesBundle_shared.so)
