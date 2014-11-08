@@ -20,9 +20,12 @@ qt5_add_resources(RESOURCES resources.qrc)
 
 add_executable(main
   src/main.cpp
-  src/map.h src/map.cpp
+
+  src/mapcanvas.h src/mapcanvas.cpp
   src/resources.h src/resources.cpp
-  ${RESOURCES}
+  src/utils.h
+
+  ${RESOURCES} src/Map.qml
 )
 target_link_libraries(main
   Qt5::Widgets Qt5::Qml Qt5::Quick

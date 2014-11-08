@@ -11,10 +11,14 @@ Resources::Resources(QObject *parent) : QObject(parent) {
 
 Resources::~Resources() {}
 
-void Resources::makeSureWorldMapIsInstalled() {
-    QString worldMapResourceId = "world_basemap.map.obf";
-    if (!resourcesManager->isResourceInstalled(worldMapResourceId)) {
-      resourcesManager->updateRepository();
-      resourcesManager->installFromRepository(worldMapResourceId);
+void Resources::downloadIfNecessary(const QList<QString>& resourceIds) {
+    if (!resourcesManager->isRepositoryAvailable()) {
+        resourcesManager->updateRepository();
+    }
+
+    for (auto& resourceId : resourceIds) {
+        if (!resourcesManager->isResourceInstalled(resourceId)) {
+            resourcesManager->installFromRepository(resourceId);
+        }
     }
 }

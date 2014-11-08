@@ -7,7 +7,7 @@
 #include <QQuickView>
 #include <QQmlContext>
 
-#include "map.h"
+#include "mapcanvas.h"
 #include "resources.h"
 
 using namespace OsmAnd;
@@ -27,19 +27,19 @@ int main(int argc, char *argv[]) {
     CoreResourcesEmbeddedBundle::loadFromCurrentExecutable();
   InitializeCore(bundle);
 
-  OsmAnd::LogPrintf(OsmAnd::LogSeverityLevel::Info, "hello world from osmand");
-  qDebug() << "hello world from qt";
-
-  qmlRegisterType<Map>("OsmAndQt", 1, 0, "Map");
-  qmlRegisterType<Resources>("OsmAnd", 1, 0, "Resources");
+  qmlRegisterType<MapCanvas>("OsmAndQt", 1, 0, "MapCanvas");
+  qmlRegisterType<Resources>("OsmAndQt", 1, 0, "Resources");
 
   Resources resources;
-  resources.makeSureWorldMapIsInstalled();
+  resources.downloadIfNecessary(QList<QString>()
+              << "world_basemap.map.obf"
+              << "austria_europe.map.obf"
+              );
 
   QQuickView view;
   view.rootContext()->setContextProperty("contextResources", &resources);
   view.setResizeMode(QQuickView::SizeRootObjectToView);
-  view.setSource(QUrl("qrc:/src/map.qml"));
+  view.setSource(QUrl("qrc:/src/Map.qml"));
   view.show();
 
   return app.exec();

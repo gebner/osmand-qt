@@ -13,7 +13,7 @@ public:
 
     std::shared_ptr<OsmAnd::ResourcesManager> resourcesManager;
 
-    void makeSureWorldMapIsInstalled();
+    void downloadIfNecessary(const QList<QString>& resourceIds);
 
 signals:
 
