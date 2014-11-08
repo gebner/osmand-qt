@@ -29,4 +29,4 @@ add_executable(main
 )
 target_link_libraries(main
   Qt5::Widgets Qt5::Qml Qt5::Quick
-  OsmAndCore_shared OsmAndCore_ResourcesBundle)
+  OsmAndCore_shared OsmAndCore_ResourcesBundle_shared)

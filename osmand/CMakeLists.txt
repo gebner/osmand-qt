@@ -60,24 +60,25 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -mssse3")
 
 include(CheckFunctionExists)
 include(CheckCSourceCompiles)
-include("${OSMAND_ROOT}/build/utils/common.cmake")
+include(build/utils/common.cmake)
 
 # osmand needs an old version of protobuf
-add_subdirectory("${OSMAND_ROOT}/core/externals/protobuf" "core/externals/protobuf")
+add_subdirectory(core/externals/protobuf)
 
 # osmand needs an old version of glm
-add_subdirectory("${OSMAND_ROOT}/core/externals/glm" "core/externals/glm")
+add_subdirectory(core/externals/glm)
 
 # skia is usually not packaged
-add_subdirectory("${OSMAND_ROOT}/core/externals/skia" "core/externals/skia")
+add_subdirectory(core/externals/skia)
 
 # osmand includes libarchive/archive.h instead of archive.h
-add_subdirectory("${OSMAND_ROOT}/core/externals/libarchive" "core/externals/libarchive")
+add_subdirectory(core/externals/libarchive)
 
 add_subdirectory(core)
 include_directories(core/include)
 
-# prevent resources from being built every single time
+# prevent resources from being built every single time because our
+# resources doesn't have a git dir
 include(ExternalProject)
 ExternalProject_Add(resources
   SOURCE_DIR ${PROJECT_SOURCE_DIR}/resources
@@ -85,7 +86,7 @@ ExternalProject_Add(resources
   INSTALL_COMMAND ""
   )
 ExternalProject_Get_Property(resources BINARY_DIR)
-add_library(OsmAndCore_ResourcesBundle empty.cc)
-add_dependencies(OsmAndCore_ResourcesBundle resources)
-target_link_libraries(OsmAndCore_ResourcesBundle
+add_library(OsmAndCore_ResourcesBundle_shared empty.cc)
+add_dependencies(OsmAndCore_ResourcesBundle_shared resources)
+target_link_libraries(OsmAndCore_ResourcesBundle_shared
   ${BINARY_DIR}/libOsmAndCore_ResourcesBundle_shared.so)
