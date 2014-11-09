@@ -25,7 +25,8 @@ add_executable(main
   src/resources.h src/resources.cpp
   src/utils.h
 
-  ${RESOURCES} src/Map.qml
+  ${RESOURCES} src/Map.qml src/Main.qml src/Resources.qml
+
 )
 target_link_libraries(main
   Qt5::Widgets Qt5::Qml Qt5::Quick
