@@ -131,20 +131,23 @@ void MapCanvas::setTarget31AtScreenPoint(QPoint target, QPoint screenPoint) {
 }
 
 struct GLStateResetter {
+    QQuickWindow *window;
+
     GLint unpack_row_length;
 
-    GLStateResetter() {
+    GLStateResetter(QQuickWindow *window) : window(window) {
         glGetIntegerv(GL_UNPACK_ROW_LENGTH, &unpack_row_length);
     }
 
     ~GLStateResetter() {
         glPixelStorei(GL_UNPACK_ROW_LENGTH, unpack_row_length);
+        window->resetOpenGLState();
     }
 };
 
 void MapCanvas::sync() {
     if (!renderer->isRenderingInitialized()) {
-        GLStateResetter resetter;
+        GLStateResetter resetter(window());
 
         renderer->initializeRendering();
 
@@ -171,7 +174,7 @@ void MapCanvas::handleWindowChanged(QQuickWindow *win) {
     }}
 
 void MapCanvas::paint() {
-    GLStateResetter resetter;
+    GLStateResetter resetter(window());
 
     renderer->update();
     if (renderer->prepareFrame()) {
