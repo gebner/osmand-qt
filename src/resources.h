@@ -32,6 +32,8 @@ class ResourceModel: public QObject {
     Q_PROPERTY(QString id READ id NOTIFY resourceChanged)
     Q_PROPERTY(uint64_t size READ size NOTIFY resourceChanged)
     Q_PROPERTY(QDateTime timestamp READ timestamp NOTIFY resourceChanged)
+    Q_PROPERTY(bool installed READ installed NOTIFY resourceChanged)
+    Q_PROPERTY(bool upToDate READ upToDate NOTIFY resourceChanged)
 
 public:
     ResourceModel(Resources *res, const std::shared_ptr<const OsmAnd::ResourcesManager::ResourceInRepository>& resourceInRepo);
@@ -44,6 +46,15 @@ public:
         dateTime.setMSecsSinceEpoch(resourceInRepo->timestamp);
         return dateTime;
     }
+    bool installed() const {
+        return res->resourcesManager->isResourceInstalled(id());
+    }
+    bool upToDate() const {
+        return res->resourcesManager->isInstalledResourceOutdated(id());
+    }
+
+    Q_INVOKABLE void install() { res->resourcesManager->installFromRepository(id()); }
+    Q_INVOKABLE void update() { res->resourcesManager->updateFromRepository(id()); }
 
 signals:
     void resourceChanged();
