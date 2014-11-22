@@ -8,11 +8,9 @@ MapCanvas {
         anchors.fill: parent
 
         onWheel: {
-            if (wheel.angleDelta.y > 0) {
-                parent.zoom += 1
-            } else {
-                parent.zoom -= 1
-            }
+            var targetAtMouse = parent.target31AtScreenPoint(Qt.point(wheel.x, wheel.y))
+            parent.zoom += wheel.angleDelta.y > 0 ? +1 : -1;
+            parent.setTarget31AtScreenPoint(targetAtMouse, Qt.point(wheel.x, wheel.y))
         }
 
         property bool currentlyDragging: false
