@@ -4,13 +4,13 @@
 #include <OsmAndCore/Map/IMapRenderer.h>
 #include <OsmAndCore/Map/MapAnimator.h>
 #include <OsmAndCore/Map/UnresolvedMapStyle.h>
+#include <OsmAndCore/Map/ObfMapObjectsProvider.h>
 #include <OsmAndCore/Map/MapStylesCollection.h>
 #include <OsmAndCore/Map/MapStylesPresetsCollection.h>
 #include <OsmAndCore/Map/MapStylePreset.h>
-#include <OsmAndCore/Map/BinaryMapRasterLayerProvider_GPU.h>
-#include <OsmAndCore/Map/BinaryMapRasterLayerProvider_Software.h>
+#include <OsmAndCore/Map/MapRasterLayerProvider_GPU.h>
 #include <OsmAndCore/Map/MapPresentationEnvironment.h>
-#include <OsmAndCore/Map/BinaryMapStaticSymbolsProvider.h>
+#include <OsmAndCore/Map/MapObjectsSymbolsProvider.h>
 #include <OsmAndCore/Map/AtlasMapRendererConfiguration.h>
 #include <OsmAndCore/ObfsCollection.h>
 #include <OsmAndCore/Utilities.h>
@@ -192,12 +192,12 @@ void MapCanvas::setupLayers() {
     auto resolvedMapStyle = resources()->resourcesManager->
             mapStylesCollection->getResolvedStyleByName(unresolvedMapStyle->name);
 
-    binaryMapDataProvider.reset(new BinaryMapDataProvider(resources()->resourcesManager->obfsCollection));
+    mapObjectsProvider.reset(new ObfMapObjectsProvider(resources()->resourcesManager->obfsCollection));
     float displayDensityFactor = 1;
     mapPresentationEnvironment.reset(new MapPresentationEnvironment(resolvedMapStyle, displayDensityFactor));
-    primitiviser.reset(new Primitiviser(mapPresentationEnvironment));
-    binaryMapPrimitivesProvider.reset(new BinaryMapPrimitivesProvider(
-                                          binaryMapDataProvider, primitiviser, referenceTileSize));
+    mapPrimitiviser.reset(new MapPrimitiviser(mapPresentationEnvironment));
+    mapPrimitivesProvider.reset(new MapPrimitivesProvider(
+                                          mapObjectsProvider, mapPrimitiviser, referenceTileSize));
 
     auto preset = resources()->resourcesManager->
             mapStylesPresetsCollection->getPreset(unresolvedMapStyle->name, mapStylePreset());
@@ -205,11 +205,11 @@ void MapCanvas::setupLayers() {
         mapPresentationEnvironment->setSettings(preset->attributes);
     }
 
-    binaryMapStaticSymbolsProvider.reset(
-                new BinaryMapStaticSymbolsProvider(
-                    binaryMapPrimitivesProvider, referenceTileSize));
-    renderer->addSymbolsProvider(binaryMapStaticSymbolsProvider);
+    mapObjectsSymbolsProvider.reset(
+                new MapObjectsSymbolsProvider(
+                    mapPrimitivesProvider, referenceTileSize));
+    renderer->addSymbolsProvider(mapObjectsSymbolsProvider);
 
-    rasterMapProvider.reset(new BinaryMapRasterLayerProvider_GPU(binaryMapPrimitivesProvider));
+    rasterMapProvider.reset(new MapRasterLayerProvider_GPU(mapPrimitivesProvider));
     renderer->setMapLayerProvider(0, rasterMapProvider);
 }

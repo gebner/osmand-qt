@@ -9,11 +9,11 @@ namespace OsmAnd {
     class IMapRenderer;
     class MapAnimator;
     class IMapLayerProvider;
-    class BinaryMapDataProvider;
+    class IMapObjectsProvider;
     class MapPresentationEnvironment;
-    class Primitiviser;
-    class BinaryMapPrimitivesProvider;
-    class BinaryMapStaticSymbolsProvider;
+    class MapPrimitiviser;
+    class MapPrimitivesProvider;
+    class MapObjectsSymbolsProvider;
 }
 
 class MapCanvas: public QQuickItem {
@@ -72,9 +72,9 @@ private:
     std::shared_ptr<OsmAnd::IMapLayerProvider> rasterMapProvider;
 
     // Offline-specific providers & resources
-    std::shared_ptr<OsmAnd::BinaryMapDataProvider> binaryMapDataProvider;
+    std::shared_ptr<OsmAnd::IMapObjectsProvider> mapObjectsProvider;
     std::shared_ptr<OsmAnd::MapPresentationEnvironment> mapPresentationEnvironment;
-    std::shared_ptr<OsmAnd::Primitiviser> primitiviser;
-    std::shared_ptr<OsmAnd::BinaryMapPrimitivesProvider> binaryMapPrimitivesProvider;
-    std::shared_ptr<OsmAnd::BinaryMapStaticSymbolsProvider> binaryMapStaticSymbolsProvider;
+    std::shared_ptr<OsmAnd::MapPrimitiviser> mapPrimitiviser;
+    std::shared_ptr<OsmAnd::MapPrimitivesProvider> mapPrimitivesProvider;
+    std::shared_ptr<OsmAnd::MapObjectsSymbolsProvider> mapObjectsSymbolsProvider;
 };
