@@ -3,13 +3,14 @@ project(OsmAnd)
 find_package(GDAL REQUIRED)
 find_package(ICU REQUIRED)
 find_package(EXPAT REQUIRED)
-find_package(GIF REQUIRED)
+#find_package(GIF REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(PNG REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(Boost REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(Freetype REQUIRED)
+find_package(LZO REQUIRED)
 
 add_library(gdal_static empty.cc)
 target_link_libraries(gdal_static ${GDAL_LIBRARY})
@@ -23,9 +24,9 @@ add_library(expat_static empty.cc)
 target_link_libraries(expat_static ${EXPAT_LIBRARIES})
 include_directories(${EXPAT_INCLUDE_DIRS})
 
-add_library(gif_static empty.cc)
-target_link_libraries(gif_static ${GIF_LIBRARIES})
-include_directories(${GIF_INCLUDE_DIR})
+#add_library(gif_static empty.cc)
+#target_link_libraries(gif_static ${GIF_LIBRARIES})
+#include_directories(${GIF_INCLUDE_DIR})
 
 add_library(jpeg_static empty.cc)
 target_link_libraries(jpeg_static ${JPEG_LIBRARIES})
@@ -68,10 +69,15 @@ add_subdirectory(core/externals/protobuf)
 # osmand needs an old version of glm
 add_subdirectory(core/externals/glm)
 
+# osmand includes old skia version which does not work with giflib-5
+add_subdirectory(core/externals/giflib)
+
 # skia is usually not packaged
 add_subdirectory(core/externals/skia)
 
 # osmand includes libarchive/archive.h instead of archive.h
+include_directories(${LZO_INCLUDE_DIRS})
+link_libraries(${LZO_LIBRARIES})
 add_subdirectory(core/externals/libarchive)
 
 add_subdirectory(core)
