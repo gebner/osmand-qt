@@ -30,7 +30,6 @@ MapCanvas::MapCanvas() : res(nullptr),
 
     auto conf = static_pointer_cast<AtlasMapRendererConfiguration>(renderer->getConfiguration());
     conf->referenceTileSizeOnScreenInPixels = referenceTileSize;
-    conf->heixelsPerTileSide = 32;
     renderer->setConfiguration(conf);
 
     MapRendererSetupOptions setupOptions;
