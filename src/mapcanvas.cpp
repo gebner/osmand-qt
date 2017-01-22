@@ -6,8 +6,6 @@
 #include <OsmAndCore/Map/UnresolvedMapStyle.h>
 #include <OsmAndCore/Map/ObfMapObjectsProvider.h>
 #include <OsmAndCore/Map/MapStylesCollection.h>
-#include <OsmAndCore/Map/MapStylesPresetsCollection.h>
-#include <OsmAndCore/Map/MapStylePreset.h>
 #include <OsmAndCore/Map/MapRasterLayerProvider_GPU.h>
 #include <OsmAndCore/Map/MapPresentationEnvironment.h>
 #include <OsmAndCore/Map/MapObjectsSymbolsProvider.h>
@@ -81,7 +79,7 @@ void MapCanvas::setResources(Resources *resources) {
 }
 
 float MapCanvas::zoom() const {
-    return renderer->getState().requestedZoom;
+    return renderer->getState().zoomLevel;
 }
 
 QPoint MapCanvas::target31() const {
@@ -198,11 +196,6 @@ void MapCanvas::setupLayers() {
     mapPrimitivesProvider.reset(new MapPrimitivesProvider(
                                           mapObjectsProvider, mapPrimitiviser, referenceTileSize));
 
-    auto preset = resources()->resourcesManager->
-            mapStylesPresetsCollection->getPreset(unresolvedMapStyle->name, mapStylePreset());
-    if (preset) {
-        mapPresentationEnvironment->setSettings(preset->attributes);
-    }
 
     mapObjectsSymbolsProvider.reset(
                 new MapObjectsSymbolsProvider(
