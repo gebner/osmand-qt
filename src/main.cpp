@@ -7,7 +7,8 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QtQml>
-#include <QQuickWindow>
+//#include <QQuickWindow>
+#include <QtQuick/QQuickView>
 
 #include "mapcanvas.h"
 #include "resources.h"
@@ -39,11 +40,13 @@ int main(int argc, char *argv[]) {
               << "austria_europe.map.obf"
               );
 
-  QQmlApplicationEngine engine;
-  engine.rootContext()->setContextProperty("contextResources", &resources);
-  engine.load(QUrl("qrc:/src/Main.qml"));
+  QQuickView view;
+  QQmlContext *context = view.rootContext();
+  context->setContextProperty("contextResources", &resources);
+  view.setResizeMode(QQuickView::SizeRootObjectToView);
+  view.setSource(QUrl("qrc:/src/Main.qml"));
+  view.show();
 
-  qobject_cast<QQuickWindow *>(engine.rootObjects().value(0))->show();
 
   return app.exec();
 }

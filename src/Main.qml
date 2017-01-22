@@ -1,17 +1,16 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.2
 
-ApplicationWindow {
+Item {
     id: root
 
     visible: true
-    title: "OsmAnd-qt"
 
     width: 800
     height: 600
 
     property variant resourcesWindow;
-
+/*
     menuBar: MenuBar {
         Menu {
             title: qsTr("Map")
@@ -27,7 +26,7 @@ ApplicationWindow {
             }
         }
     }
-
+    */
     Map {
         anchors.fill: parent
     }

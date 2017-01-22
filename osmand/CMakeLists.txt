@@ -80,6 +80,9 @@ include_directories(${LZO_INCLUDE_DIRS})
 link_libraries(${LZO_LIBRARIES})
 add_subdirectory(core/externals/libarchive)
 
+# osmand needs geographiclib
+add_subdirectory(core/externals/geographiclib)
+
 add_subdirectory(core)
 include_directories(core/include)
 
